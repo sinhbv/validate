@@ -32,12 +32,15 @@ export default class Property {
     if (typeof messages == 'string') {
       messages = { default: messages };
     }
-
-    const entries = Object.entries(messages);
-
-    for (let [key, val] of entries) {
-      this.messages[key] = val;
+    const keys = Object.keys(messages);
+    for(let key of keys){
+      this.messages[key] = messages[key];
     }
+    //const entries = Object.entries(messages);
+    
+    // for (let [key, val] of entries) {
+    //   this.messages[key] = val;
+    // }
 
     return this;
   }

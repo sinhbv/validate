@@ -164,11 +164,21 @@ export default class Schema {
    */
 
   typecast(obj) {
-    for (let [path, prop] of Object.entries(this.props)) {
-      walk(path, obj, (key, value) => {
-        if (value == null) return;
+    // for (let [path, prop] of Object.entries(this.props)) {
+    //   walk(path, obj, (key, value) => {
+    //     if (value == null) return;
+    //     const cast = prop.typecast(value);
+    //     if (cast === value) return;
+    //     dot.set(obj, key, cast);
+    //   });
+    // }
+
+    for(let path of Object.keys(this.props)){
+      let prop = this.props[path];
+      walk(path, obj, (key, value)=>{
+        if(value == null) return;
         const cast = prop.typecast(value);
-        if (cast === value) return;
+        if(cast === value) return;
         dot.set(obj, key, cast);
       });
     }
@@ -197,7 +207,19 @@ export default class Schema {
       return this;
     }
 
-    for (let [key, val] of Object.entries(obj)) {
+    // for (let [key, val] of Object.entries(obj)) {
+    //   const path = join(key, prefix);
+
+    //   if (!this.props[path]) {
+    //     delete obj[key];
+    //     continue;
+    //   }
+
+    //   this.strip(val, path);
+    // }
+
+    for (let key of Object.keys(obj)) {
+      let val = obj[key];
       const path = join(key, prefix);
 
       if (!this.props[path]) {
@@ -239,7 +261,15 @@ export default class Schema {
       this.strip(obj);
     }
 
-    for (let [path, prop] of Object.entries(this.props)) {
+    // for (let [path, prop] of Object.entries(this.props)) {
+    //   walk(path, obj, (key, value) => {
+    //     const err = prop.validate(value, obj, key);
+    //     if (err) errors.push(err);
+    //   });
+    // }
+
+    for (let path of Object.keys(this.props)) {
+      let prop = this.props[path];
       walk(path, obj, (key, value) => {
         const err = prop.validate(value, obj, key);
         if (err) errors.push(err);
